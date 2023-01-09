@@ -1,15 +1,34 @@
-import { Box, Flex, Text } from '@chakra-ui/react';
+import { Box, Flex, Text,Center } from '@chakra-ui/react';
 
 export default function DashboardContainer() {
+  const data = {
+    total: 200301222
+  }
+
+  const total = Intl.NumberFormat('en-US').format(data.total)
+
+  
   return (
-    <Flex
-      justifyContent="center"
-      alignItems="center"
-      height="calc(100vh - 50px)"
-    >
-      <Text>
-        Hello World, <br /> <b>Do your magic here,</b>{' '}
-      </Text>
-    </Flex>
+    <Box fontFamily='Poppins'>
+      <Box
+          my='2' mx='2' px='2' 
+          fontWeight='semibold'
+          as='h4'
+          lineHeight='tight'
+          isTruncated
+        >
+          Periode: 2023-01
+      </Box>
+        <Box 
+          my='2' mx='2' px='2' borderWidth='0px' borderRadius='lg'
+          lineHeight='tight'
+          isTruncated
+        >
+          <Box fontSize='sm'>Laba Rugi</Box>
+          <Center fontSize='xl' mt='3'>
+            Rp {total}
+          </Center>
+        </Box>
+    </Box>
   );
 }
