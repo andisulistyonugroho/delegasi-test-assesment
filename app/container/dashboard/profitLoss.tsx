@@ -1,6 +1,9 @@
-import {Box, Center, Text, Flex, Button, Spacer} from '@chakra-ui/react'
+import {
+  Box, Center, Text, Flex, Button, Spacer, useDisclosure, Modal,ModalOverlay,ModalContent, ModalHeader,
+  ModalCloseButton,ModalBody
+} from '@chakra-ui/react'
 
-function detailProfitLoss() {
+function profitLoss() {
     const data = {
         total: 200301222
       }
@@ -14,7 +17,7 @@ function detailProfitLoss() {
         isTruncated
         bg='grey.400'
       >
-        <Box fontSize='sm'>Laporan Laba Rugi</Box>
+        <Text fontSize='sm'>Laporan Laba Rugi</Text>
         <Center fontSize='xl' mt='3'>
           Rp {total}
         </Center>
@@ -29,11 +32,34 @@ function detailProfitLoss() {
             <Text color='red.400' fontSize='sm'>Rp 10.000.000</Text>
           </Box>
         </Flex>
+        <DetailProfitLoss />
 
-        <Button size='xs' isFullWidth>Lihat detail</Button>
       </Box>
-        
     )
 }
 
-export default detailProfitLoss
+function DetailProfitLoss() {
+  const {onOpen, isOpen, onClose} = useDisclosure()
+  return (
+    <>
+    <Button size='xs' isFullWidth onClick={onOpen}>Lihat detail</Button>
+    <Modal isOpen={isOpen} onClose={onClose} size='full'>
+        <ModalOverlay />
+        <ModalContent fontFamily='Poppins'>
+          <ModalHeader>
+            <Text>Detail Laba Rugi</Text>
+            <Text fontSize='xs'>Periode 2023-01</Text>
+          </ModalHeader>
+          
+          <ModalCloseButton />
+          <ModalBody>
+            
+            
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </>
+  )
+}
+
+export default profitLoss
