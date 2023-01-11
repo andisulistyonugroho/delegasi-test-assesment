@@ -20,11 +20,15 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
 } from '@chakra-ui/icons';
+import { useLoaderData } from '@remix-run/react';
+import { getProfitLoss } from '~/models/profitloss.server';
+
 import DashboardContainer from '~/container/dashboard';
 
 export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
-
+  const data = useLoaderData()
+  
   return (
     <Box
       display="flex"
@@ -93,7 +97,7 @@ export default function WithSubnavigation() {
           <Collapse in={isOpen} animateOpacity>
             <MobileNav />
           </Collapse>
-          <DashboardContainer />
+          <DashboardContainer dashboardData={data} />
         </Box>
       </Box>
     </Box>
@@ -180,3 +184,8 @@ const NAV_ITEMS: Array<NavItem> = [
     href: '#',
   },
 ];
+
+export async function loader (){
+  const profitlossRes = await getProfitLoss();
+  return {profitloss: profitlossRes, neraca: {}}
+}
