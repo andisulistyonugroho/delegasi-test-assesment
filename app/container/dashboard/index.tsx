@@ -1,7 +1,18 @@
 import { Box } from '@chakra-ui/react';
 import ProfitLoss from './profitLoss';
 
-export default function DashboardContainer() {
+interface result {
+  dashboardData: {
+    neraca: object, 
+    profitloss: {
+      label: string,
+      value: number,
+      details: any
+    }
+  }
+}
+
+export default function DashboardContainer(data: result) {
   return (
     <Box fontFamily='Poppins'>
       <Box
@@ -13,7 +24,7 @@ export default function DashboardContainer() {
         >
           Periode: 2023-01
       </Box>
-      <ProfitLoss />
+      <ProfitLoss profitloss={data.dashboardData.profitloss} />
     </Box>
   );
 }

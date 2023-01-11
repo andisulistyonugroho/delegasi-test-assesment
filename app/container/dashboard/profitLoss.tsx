@@ -1,14 +1,23 @@
 import {
   Box, Center, Text, Flex, Button, Spacer, useDisclosure, Modal,ModalOverlay,ModalContent, ModalHeader,
-  ModalCloseButton,ModalBody
+  ModalCloseButton, TableContainer, Table, Tbody, Tr, Td
 } from '@chakra-ui/react'
 
-function profitLoss() {
-    const data = {
-        total: 200301222
-      }
+interface profitloss {
+  profitloss: {
+    value: number,
+    details: any
+  }
+}
+
+function ProfitLoss(data: profitloss) {
+    const profitloss = data.profitloss
+    const grossOmset = profitloss.details.find((obj: { label: string }) => obj.label === 'Pendapatan Kotor')
+    const expense = profitloss.details.find((obj: {label: string}) => obj.label === 'Beban')
     
-    const total = Intl.NumberFormat('en-US').format(data.total)
+    const total = Intl.NumberFormat('en-US').format(profitloss.value)
+    const totalGrossOmset = Intl.NumberFormat('en-US').format(grossOmset.value)
+    const totalExpense = Intl.NumberFormat('en-US').format(expense.value)
     
     return (
         <Box 
@@ -24,12 +33,12 @@ function profitLoss() {
         <Flex pt='3'>
           <Box p='4'>
             <Text fontSize='xs'>Pendapatan</Text>
-            <Text fontSize='sm' color='green.400'>Rp 10.000</Text>
+            <Text fontSize='sm' color='green.500'>Rp {totalGrossOmset}</Text>
           </Box>
           <Spacer />
           <Box p='4'>
             <Text fontSize='xs'>Beban</Text>
-            <Text color='red.400' fontSize='sm'>Rp 10.000.000</Text>
+            <Text color='red' fontSize='sm'>Rp {totalExpense}</Text>
           </Box>
         </Flex>
         <DetailProfitLoss />
@@ -47,19 +56,37 @@ function DetailProfitLoss() {
         <ModalOverlay />
         <ModalContent fontFamily='Poppins'>
           <ModalHeader>
-            <Text>Detail Laba Rugi</Text>
-            <Text fontSize='xs'>Periode 2023-01</Text>
+            <Text fontWeight='normal'>Detail Laba Rugi</Text>
+            <Text fontWeight='normal' fontSize='xs'>Periode 2023-01</Text>
           </ModalHeader>
           
           <ModalCloseButton />
-          <ModalBody>
-            
-            
-          </ModalBody>
+          
+          <TableContainer>
+            <Table variant='striped' colorScheme='teal' size='sm'>
+              <Tbody>
+                <Tr>
+                  <Td fontWeight='bold' colSpan={3}>Pendapatan</Td>
+                </Tr>
+                <Tr>
+                  <Td fontSize='xs'>
+                    Pendapatan Kotor
+                  </Td>
+                  <Td isNumeric fontSize='xs'>196919000</Td>
+                  <Td></Td>
+                </Tr>
+                <Tr>
+                  <Td fontSize='xs'>Diskon Penjualan</Td>
+                  <Td></Td>
+                  <Td isNumeric fontSize='xs'>196919000</Td>
+                </Tr>
+              </Tbody>
+            </Table>
+          </TableContainer>
         </ModalContent>
       </Modal>
     </>
   )
 }
 
-export default profitLoss
+export default ProfitLoss
