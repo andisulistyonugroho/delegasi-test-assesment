@@ -46,12 +46,12 @@ export default function balanceSheet(data: data) {
           <Text color='red' fontSize='sm'>Rp {formatNumber(pasiva)}</Text>
         </Box>
       </Flex>
-      <DetailBalanceSheet aktiva={objectAktiva} />
+      <DetailBalanceSheet aktiva={objectAktiva} pasiva={objectPasiva} />
     </Box>
   )
 }
 
-function DetailBalanceSheet(data:{aktiva:NeracaDetail}) {
+function DetailBalanceSheet(data:{aktiva:NeracaDetail, pasiva: NeracaDetail}) {
   const {onOpen, isOpen, onClose} = useDisclosure()
   
   return (
@@ -79,6 +79,7 @@ function DetailBalanceSheet(data:{aktiva:NeracaDetail}) {
           <GridItem p='1' fontSize='sm' fontWeight='bold'><Text align='right'>Debit</Text></GridItem>
           <GridItem p='1' fontSize='sm' fontWeight='bold'><Text align='right'>Kredit</Text></GridItem>
           <NeracaAktiva data={data.aktiva} />
+          <NeracaPasiva data={data.pasiva} />
         </Grid>
 
         </ModalBody>
@@ -93,26 +94,64 @@ function NeracaAktiva(neracaaktiva: {data: NeracaDetail}) {
   
   return (
     <>
+      <GridItem colSpan={3} bg='teal.100' p='1' fontSize='xs' fontWeight='bold'>
+        Aset
+      </GridItem>
       {assets?.map((row,index) => (
-        <GridNeraca key={index} data={row} index={index} />
+        <GridNeraca key={index} data={row} index={index} flag='debit' />
       ))}
     </>
   )
 }
 
-function GridNeraca(input:{data: NeracaDetail, index: number}) {
+function NeracaPasiva(neracapasiva: {data: NeracaDetail}) {
+  const liabilities = generateLiability(neracapasiva.data)
+  
+  return (
+    <>
+      <GridItem colSpan={3} bg='teal.100' p='1' fontSize='xs' fontWeight='bold'>
+        Kewajiban
+      </GridItem>
+      {liabilities?.map((row,index) => (
+        <GridNeraca key={index} data={row} index={index} flag='kredit' />
+      ))}
+    </>
+  )
+}
+
+function GridNeraca(input:{data: NeracaDetail, index: number, flag: string}) {
   const rowColor = function(value:number) {
     return value%2 === 1 ? '' : 'teal.100'
+  }
+  let debit = function(flag: string) {
+    if (flag === 'debit') {
+      return (
+        <Text align='right'>
+          {formatNumber(input.data.value) }
+        </Text>
+      )
+    }
+    return ''
+  }
+  let kredit = function(flag: string) {
+    if (flag === 'kredit') {
+      return (
+        <Text align='right'>
+          {formatNumber(input.data.value) }
+        </Text>
+      )
+    }
+    return ''
   }
   return (
     <>
     <GridItem py='1' pl='1' fontSize='xs' bg={rowColor(input.index)}>{input.data.label}</GridItem>
     <GridItem py='1' fontSize='xs' bg={rowColor(input.index)}>
-      <Text align='right'>
-        {formatNumber(input.data.value) }
-      </Text>
+      {debit(input.flag)}
     </GridItem>
-    <GridItem py='1' bg={rowColor(input.index)}></GridItem>
+    <GridItem py='1' fontSize='xs' bg={rowColor(input.index)}>
+      {kredit(input.flag)}
+    </GridItem>
     </>
   )
 }
@@ -131,6 +170,24 @@ function generateAssets(data:NeracaDetail) {
   assets?.push(...(aktivalancarlain.details||[]))
   assets?.push(...(aktivaTidakLancar.details||[]))
   return assets
+}
+
+function generateLiability(data:NeracaDetail) {
+  console.log('liabli:', data);
+  
+  const kewajibanlancar = getDataByLabel(data,'Kewajiban Lancar')
+  // const cashnbank = getDataByLabel(aktivaLancar,'Kas & Bank')
+  // const akunpiutang = getDataByLabel(aktivaLancar,'Akun Piutang')
+  // const persediaan = getDataByLabel(aktivaLancar,'Persediaan')
+  // const aktivalancarlain = getDataByLabel(aktivaLancar,'Aktiva Lancar Lainnya')
+  // const aktivaTidakLancar = getDataByLabel(data,'Aktiva Tidak Lancar')
+  
+  let liabilites = kewajibanlancar.details
+  // liabilites?.push(akunpiutang)
+  // liabilites?.push(persediaan)
+  // liabilites?.push(...(aktivalancarlain.details||[]))
+  // liabilites?.push(...(aktivaTidakLancar.details||[]))
+  return liabilites
 }
 
 function formatNumber(value:number) {
