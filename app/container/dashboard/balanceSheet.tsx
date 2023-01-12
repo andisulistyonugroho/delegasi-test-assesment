@@ -71,15 +71,24 @@ function DetailBalanceSheet(data:{aktiva:NeracaDetail, pasiva: NeracaDetail}) {
         <Grid
           templateColumns='repeat(3, 1fr)'
         >
-          <GridItem colSpan={1} bg='teal.100' p='1' fontSize='sm' fontWeight='bold'>Akun</GridItem>
-          <GridItem colSpan={2} bg='teal.100' p='1' fontSize='sm' fontWeight='bold'>
+          <GridItem colSpan={1} bg='teal.100' p='1' fontSize='xs' fontWeight='bold'>Akun</GridItem>
+          <GridItem colSpan={2} bg='teal.100' p='1' fontSize='xs' fontWeight='bold'>
             <Text align='center'>Saldo</Text>
           </GridItem>
           <GridItem></GridItem>
-          <GridItem p='1' fontSize='sm' fontWeight='bold'><Text align='right'>Debit</Text></GridItem>
-          <GridItem p='1' fontSize='sm' fontWeight='bold'><Text align='right'>Kredit</Text></GridItem>
+          <GridItem p='1' fontSize='xs' fontWeight='bold'><Text align='right'>Debit</Text></GridItem>
+          <GridItem p='1' fontSize='xs' fontWeight='bold'><Text align='right'>Kredit</Text></GridItem>
           <NeracaAktiva data={data.aktiva} />
           <NeracaPasiva data={data.pasiva} />
+          <NeracaEquity data={data.pasiva} />
+          <GridItem colSpan={1} bg='teal.100' p='1' fontSize='sm' fontWeight='bold'></GridItem>
+          <GridItem colSpan={1} bg='teal.100' p='1' fontSize='xs' fontWeight='bold'>
+            <Text align='right'>{formatNumber(data.aktiva.value)}</Text>
+          </GridItem>
+          <GridItem colSpan={1} bg='teal.100' p='1' fontSize='xs' fontWeight='bold'>
+            <Text align='right'>{formatNumber(data.pasiva.value)}</Text>
+          </GridItem>
+
         </Grid>
 
         </ModalBody>
@@ -119,6 +128,21 @@ function NeracaPasiva(neracapasiva: {data: NeracaDetail}) {
   )
 }
 
+function NeracaEquity(neracapasiva: {data: NeracaDetail}) {
+  const equity = generateEquity(neracapasiva.data)
+  
+  return (
+    <>
+      <GridItem colSpan={3} bg='teal.100' p='1' fontSize='xs' fontWeight='bold'>
+        Ekuitas
+      </GridItem>
+      {equity?.map((row,index) => (
+        <GridNeraca key={index} data={row} index={index} flag='kredit' />
+      ))}
+    </>
+  )
+}
+
 function GridNeraca(input:{data: NeracaDetail, index: number, flag: string}) {
   const rowColor = function(value:number) {
     return value%2 === 1 ? '' : 'teal.100'
@@ -149,7 +173,7 @@ function GridNeraca(input:{data: NeracaDetail, index: number, flag: string}) {
     <GridItem py='1' fontSize='xs' bg={rowColor(input.index)}>
       {debit(input.flag)}
     </GridItem>
-    <GridItem py='1' fontSize='xs' bg={rowColor(input.index)}>
+    <GridItem py='1' pr='1' fontSize='xs' bg={rowColor(input.index)}>
       {kredit(input.flag)}
     </GridItem>
     </>
@@ -173,14 +197,19 @@ function generateAssets(data:NeracaDetail) {
 }
 
 function generateLiability(data:NeracaDetail) {
-  console.log('liabli:', data);
-  
   const kewajibanlancar = getDataByLabel(data,'Kewajiban Lancar')
   const kewajibantidaklancar = getDataByLabel(data,'Kewajiban Tidak Lancar')
   
   let liabilites = kewajibanlancar.details
   liabilites?.push(...(kewajibantidaklancar.details||[]))
   return liabilites
+}
+
+function generateEquity(data:NeracaDetail) {
+  const ekuitas = getDataByLabel(data,'Ekuitas')
+  
+  let equity = ekuitas.details
+  return equity
 }
 
 function formatNumber(value:number) {
