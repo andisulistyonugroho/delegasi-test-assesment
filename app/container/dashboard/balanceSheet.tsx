@@ -37,12 +37,12 @@ export default function balanceSheet(data: data) {
       </Center>
       <Flex pt='3'>
         <Box p='4'>
-          <Text fontSize='xs'>Aktiva</Text>
+          <Text fontSize='sm'>Aktiva</Text>
           <Text fontSize='sm' color='#499C6E'>Rp {formatNumber(aktiva)}</Text>
         </Box>
         <Spacer />
         <Box p='4'>
-          <Text fontSize='xs'>Pasiva</Text>
+          <Text fontSize='sm'>Pasiva</Text>
           <Text color='red' fontSize='sm'>Rp {formatNumber(pasiva)}</Text>
         </Box>
       </Flex>
@@ -62,30 +62,30 @@ function DetailBalanceSheet(data:{aktiva:NeracaDetail, pasiva: NeracaDetail}) {
       <ModalContent fontFamily='Poppins'>
         <ModalHeader>
           <Text fontWeight='normal'>Detail Neraca Keuangan</Text>
-          <Text fontWeight='normal' fontSize='xs'>Periode 2023-01</Text>
+          <Text fontWeight='normal' fontSize='sm'>Periode 2023-01</Text>
         </ModalHeader>
         
         <ModalCloseButton />
-        <ModalBody px='0'>
+        <ModalBody px='3'>
 
         <Grid
           templateColumns='repeat(3, 1fr)'
         >
-          <GridItem colSpan={1} bg='teal.100' p='1' fontSize='xs' fontWeight='bold'>Akun</GridItem>
-          <GridItem colSpan={2} bg='teal.100' p='1' fontSize='xs' fontWeight='bold'>
+          <GridItem colSpan={1} bg='teal.100' p='1' fontSize='sm' fontWeight='bold'>Akun</GridItem>
+          <GridItem colSpan={2} bg='teal.100' p='1' fontSize='sm' fontWeight='bold'>
             <Text align='center'>Saldo</Text>
           </GridItem>
           <GridItem></GridItem>
-          <GridItem p='1' fontSize='xs' fontWeight='bold'><Text align='right'>Debit</Text></GridItem>
-          <GridItem p='1' fontSize='xs' fontWeight='bold'><Text align='right'>Kredit</Text></GridItem>
+          <GridItem p='1' fontSize='sm' fontWeight='bold'><Text align='right'>Debit</Text></GridItem>
+          <GridItem p='1' fontSize='sm' fontWeight='bold'><Text align='right'>Kredit</Text></GridItem>
           <NeracaAktiva data={data.aktiva} />
           <NeracaPasiva data={data.pasiva} />
           <NeracaEquity data={data.pasiva} />
           <GridItem colSpan={1} bg='teal.100' p='1' fontSize='sm' fontWeight='bold'></GridItem>
-          <GridItem colSpan={1} bg='teal.100' p='1' fontSize='xs' fontWeight='bold'>
+          <GridItem colSpan={1} bg='teal.100' p='1' fontSize='sm' fontWeight='bold'>
             <Text align='right'>{formatNumber(data.aktiva.value)}</Text>
           </GridItem>
-          <GridItem colSpan={1} bg='teal.100' p='1' fontSize='xs' fontWeight='bold'>
+          <GridItem colSpan={1} bg='teal.100' p='1' fontSize='sm' fontWeight='bold'>
             <Text align='right'>{formatNumber(data.pasiva.value)}</Text>
           </GridItem>
 
@@ -103,7 +103,7 @@ function NeracaAktiva(neracaaktiva: {data: NeracaDetail}) {
   
   return (
     <>
-      <GridItem colSpan={3} bg='teal.100' p='1' fontSize='xs' fontWeight='bold'>
+      <GridItem colSpan={3} bg='teal.100' p='1' fontSize='sm' fontWeight='bold'>
         Aset
       </GridItem>
       {assets?.map((row,index) => (
@@ -118,7 +118,7 @@ function NeracaPasiva(neracapasiva: {data: NeracaDetail}) {
   
   return (
     <>
-      <GridItem colSpan={3} bg='teal.100' p='1' fontSize='xs' fontWeight='bold'>
+      <GridItem colSpan={3} bg='teal.100' p='1' fontSize='sm' fontWeight='bold'>
         Kewajiban
       </GridItem>
       {liabilities?.map((row,index) => (
@@ -133,7 +133,7 @@ function NeracaEquity(neracapasiva: {data: NeracaDetail}) {
   
   return (
     <>
-      <GridItem colSpan={3} bg='teal.100' p='1' fontSize='xs' fontWeight='bold'>
+      <GridItem colSpan={3} bg='teal.100' p='1' fontSize='sm' fontWeight='bold'>
         Ekuitas
       </GridItem>
       {equity?.map((row,index) => (
@@ -169,11 +169,11 @@ function GridNeraca(input:{data: NeracaDetail, index: number, flag: string}) {
   }
   return (
     <>
-    <GridItem py='1' pl='1' fontSize='xs' bg={rowColor(input.index)}>{input.data.label}</GridItem>
-    <GridItem py='1' fontSize='xs' bg={rowColor(input.index)}>
+    <GridItem py='1' pl='1' fontSize='sm' bg={rowColor(input.index)}>{input.data.label}</GridItem>
+    <GridItem py='1' fontSize='sm' bg={rowColor(input.index)}>
       {debit(input.flag)}
     </GridItem>
-    <GridItem py='1' pr='1' fontSize='xs' bg={rowColor(input.index)}>
+    <GridItem py='1' pr='1' fontSize='sm' bg={rowColor(input.index)}>
       {kredit(input.flag)}
     </GridItem>
     </>
