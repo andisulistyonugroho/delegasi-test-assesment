@@ -27,5 +27,5 @@ harapannya semakin lama user makin paham pola perhitungan akuntansinya
 
 - Ada menu untuk melihat detail jika user ingin melihat detail neraca
 
-- Pada detail neraca, tampilan dibuat bertumpuk (stafel)
+- Pada detail neraca, tampilan dibuat bertumpuk (stafel) karena kemungkinan akun neraca bisa banyak, akun dibagi atas Aset, Kewajiban, Ekuitas. Untuk Aset diletakkan di kolom debit, Kewajiban dan Ekuitas di kolom kredit.
 
