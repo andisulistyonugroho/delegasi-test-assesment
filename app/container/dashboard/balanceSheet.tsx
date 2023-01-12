@@ -1,6 +1,6 @@
 import {
   Box, Center, Text, Flex, Button, Spacer, useDisclosure, Modal,ModalOverlay,ModalContent, ModalHeader,
-ModalCloseButton, Grid, GridItem, ModalBody
+ModalCloseButton, Grid, GridItem, ModalBody, InputLeftAddon
 } from '@chakra-ui/react'
 
 type data = {
@@ -71,13 +71,13 @@ function DetailBalanceSheet(data:{aktiva:NeracaDetail}) {
         <Grid
           templateColumns='repeat(3, 1fr)'
         >
-          <GridItem h='10' colSpan={1} bg='teal.100' p='2'>Akun</GridItem>
-          <GridItem h='10' colSpan={2} bg='teal.100' p='2'>
+          <GridItem colSpan={1} bg='teal.100' p='1' fontSize='sm' fontWeight='bold'>Akun</GridItem>
+          <GridItem colSpan={2} bg='teal.100' p='1' fontSize='sm' fontWeight='bold'>
             <Text align='center'>Saldo</Text>
           </GridItem>
-          <GridItem h='10'></GridItem>
-          <GridItem h='10' p='2'><Text align='center'>Debit</Text></GridItem>
-          <GridItem h='10' p='2'><Text align='center'>Kredit</Text></GridItem>
+          <GridItem></GridItem>
+          <GridItem p='1' fontSize='sm' fontWeight='bold'><Text align='right'>Debit</Text></GridItem>
+          <GridItem p='1' fontSize='sm' fontWeight='bold'><Text align='right'>Kredit</Text></GridItem>
           <NeracaAktiva data={data.aktiva} />
         </Grid>
 
@@ -94,22 +94,32 @@ function NeracaAktiva(neracaaktiva: {data: NeracaDetail}) {
   const aktivaLancar = getDataByLabel(neracaaktiva.data,'Aktiva Lancar')
   const cashnbank = getDataByLabel(aktivaLancar,'Kas & Bank')
   console.log('A:', cashnbank.details)
-  // const asset = []
-  // asset = asset.push(cashnbank.details)
+  const assets = cashnbank.details
+  console.log('B:', assets)
   
   return (
-    <Box>----</Box>
+    <>
+      {assets?.map((row,index) => (
+        <GridNeraca key={index} data={row} index={index} />
+      ))}
+    </>
   )
 }
 
-function GridNeraca(data:{details:{label:string, value: number, details: any, children: any}}) {
-  console.log(data.details.details)
+function GridNeraca(input:{data: NeracaDetail, index: number}) {
+  console.log(input.data)
+  const rowColor = function(value:number) {
+    return value%2 === 1 ? '' : 'teal.100'
+  }
   return (
     <>
-    <GridItem>{data.details.label}</GridItem>
-    <GridItem>{data.details.value }</GridItem>
-    <GridItem>{data.details.label}</GridItem>
-    <GridNeracaChild row={data.details.details} />
+    <GridItem py='1' pl='1' fontSize='xs' bg={rowColor(input.index)}>{input.data.label}</GridItem>
+    <GridItem py='1' fontSize='xs' bg={rowColor(input.index)}>
+      <Text align='right'>
+        {formatNumber(input.data.value) }
+      </Text>
+    </GridItem>
+    <GridItem py='1' bg={rowColor(input.index)}></GridItem>
     </>
   )
 }
