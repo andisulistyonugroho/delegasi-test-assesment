@@ -29,3 +29,9 @@ harapannya semakin lama user makin paham pola perhitungan akuntansinya
 
 - Pada detail neraca, tampilan dibuat bertumpuk (stafel) karena kemungkinan akun neraca bisa banyak, akun dibagi atas Aset, Kewajiban, Ekuitas. Untuk Aset diletakkan di kolom debit, Kewajiban dan Ekuitas di kolom kredit.
 
+3. Tampilan modal dialog untuk detail labarugi dan neraca dibuat fullscreen agar bagian layar bisa lebih banyak di isi dengan data detail.
+
+## Deployment
+Deployment dilakukan di vercel dengan alamat
+[Delegasi Vercel App](https://delegasi-test-assesment-ecru.vercel.app/)
+
