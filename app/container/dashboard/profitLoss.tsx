@@ -1,13 +1,19 @@
 import {
   Box, Center, Text, Flex, Button, Spacer, useDisclosure, Modal,ModalOverlay,ModalContent, ModalHeader,
-  ModalCloseButton, SimpleGrid, TableContainer, Table, Tbody, Tr, Td
+  ModalCloseButton, SimpleGrid, ModalBody
 } from '@chakra-ui/react'
 
-interface data {
+type data = {
   profitloss: {
     value: number,
     details: any
   }
+}
+
+type rowData  = {
+  label: string,
+  value: number,
+  subtract: boolean
 }
 
 function ProfitLoss(data: data) {
@@ -52,7 +58,7 @@ function DetailProfitLoss(data:data) {
   return (
     <>
     <Button isFullWidth onClick={onOpen}>Lihat detail</Button>
-    <Modal isOpen={isOpen} onClose={onClose} size='sm' isCentered>
+    <Modal isOpen={isOpen} onClose={onClose} size='sm' isCentered scrollBehavior='inside'>
       <ModalOverlay />
       <ModalContent fontFamily='Poppins'>
         <ModalHeader>
@@ -61,13 +67,11 @@ function DetailProfitLoss(data:data) {
         </ModalHeader>
         
         <ModalCloseButton />
+        <ModalBody px='3'>
 
-        <SimpleGrid columns={2} fontSize='sm'>
-        {data.profitloss.details.map((row: { label: string,value: number }, index:number) => (
-          <GridProfitLoss key={index} gridrow={row} rowctr={index} />
-        ))}
-        </SimpleGrid>
-        
+          <Income profitloss={data.profitloss} />
+
+        </ModalBody>
       </ModalContent>
     </Modal>
     </>
@@ -78,14 +82,55 @@ function formatNumber(value:number) {
   return Intl.NumberFormat('en-US').format(value)
 }
 
-function GridProfitLoss(data:{ gridrow:{label: string,value: number},rowctr: number }) {
+// third parameter is a marker wether this object deducting money or not
+function getDataByLabel(data:data,label:string, flag: string) {
+  const found = data.profitloss.details.find((obj: { label: string }) => obj.label === label)
+  return found ? {...found,subtract: flag === 'deduct' ? true : false} : {label: label + ': not found', value: 0}
+}
+
+function GridProfitLoss(data:{ gridrow:{label: string,value: number, subtract: boolean},rowctr: number }) {
   const rowColor = function(value:number) {
     return value%2 === 1 ? 'teal.100' : ''
   }
+  const theValue = function (value:number, subtract:boolean) {
+    if (subtract) {
+      return '('+formatNumber(value)+')'  
+    }
+    return formatNumber(value)
+  }
+  
   return (
     <>
     <Box bg={rowColor(data.rowctr)} py='2' pl='4'>{data.gridrow.label}</Box>
-    <Box bg={rowColor(data.rowctr)} py='2' pr='3'><Text align='right'>{formatNumber(data.gridrow.value)}</Text></Box>
+    <Box bg={rowColor(data.rowctr)} py='2' pr='3'>
+      <Text align='right'>
+        {theValue(data.gridrow.value, data.gridrow.subtract)}
+      </Text>
+    </Box>
+    </>
+  )
+}
+
+function Income(data:data) {
+  console.log(data.profitloss)
+  
+  // third parameter is market wether this value adding money or deducting money
+  const rowIncome = [
+    getDataByLabel(data,'Pendapatan Kotor', 'add'),
+    getDataByLabel(data,'Diskon Penjualan','deduct'),
+    getDataByLabel(data,'Refund', 'deduct'),
+    getDataByLabel(data,'Komisi & Feee', 'deduct'),
+    getDataByLabel(data,'Pendapatan Bersih', 'none')
+  ]
+
+  return (
+    <>
+    <Text bg='teal.100' fontWeight='bold' p='2'>Pendapatan</Text>
+    <SimpleGrid columns={2} fontSize='sm'>
+      {rowIncome.map((row:rowData,index:number) => (
+        <GridProfitLoss key={index} gridrow={row} rowctr={index} />
+      ))}
+    </SimpleGrid>
     </>
   )
 }
