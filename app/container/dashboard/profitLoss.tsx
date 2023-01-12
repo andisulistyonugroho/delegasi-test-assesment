@@ -1,6 +1,6 @@
 import {
   Box, Center, Text, Flex, Button, Spacer, useDisclosure, Modal,ModalOverlay,ModalContent, ModalHeader,
-  ModalCloseButton, SimpleGrid, ModalBody
+  ModalCloseButton, SimpleGrid, ModalBody, Divider
 } from '@chakra-ui/react'
 
 type data = {
@@ -16,14 +16,16 @@ type rowData  = {
   subtract: boolean
 }
 
+let profit = 0
+
 function ProfitLoss(data: data) {
     const profitloss = data.profitloss
     const grossOmset = profitloss.details.find((obj: { label: string }) => obj.label === 'Pendapatan Kotor')
     const expense = profitloss.details.find((obj: {label: string}) => obj.label === 'Beban')
     
-    const total = Intl.NumberFormat('en-US').format(profitloss.value)
-    const totalGrossOmset = Intl.NumberFormat('en-US').format(grossOmset.value)
-    const totalExpense = Intl.NumberFormat('en-US').format(expense.value)
+    profit = profitloss.value
+    const totalGrossOmset = grossOmset.value
+    const totalExpense = expense.value
     
     return (
         <Box 
@@ -34,17 +36,17 @@ function ProfitLoss(data: data) {
       >
         <Text fontSize='sm' textAlign='center'>Laba Rugi</Text>
         <Center fontSize='xl' fontWeight='bold' mt='3' color='#255057'>
-          Rp {total}
+          Rp {formatNumber(profit)}
         </Center>
         <Flex pt='3'>
           <Box p='4'>
             <Text fontSize='xs'>Pendapatan</Text>
-            <Text fontSize='sm' color='#499C6E'>Rp {totalGrossOmset}</Text>
+            <Text fontSize='sm' color='#499C6E'>Rp {formatNumber(totalGrossOmset)}</Text>
           </Box>
           <Spacer />
           <Box p='4'>
             <Text fontSize='xs'>Beban</Text>
-            <Text color='red' fontSize='sm'>Rp {totalExpense}</Text>
+            <Text color='red' fontSize='sm'>Rp {formatNumber(totalExpense)}</Text>
           </Box>
         </Flex>
         <DetailProfitLoss profitloss={profitloss} />
@@ -70,8 +72,11 @@ function DetailProfitLoss(data:data) {
         <ModalBody px='3'>
 
           <Income profitloss={data.profitloss} />
-
           <GrossExpense profitloss={data.profitloss} />
+          <OperatingProfit profitloss={data.profitloss} />
+          <ProfitBeforeTaxes profitloss={data.profitloss} />
+          <Divider orientation='horizontal' />
+          <NetProfit profitloss={data.profitloss} />
 
         </ModalBody>
       </ModalContent>
@@ -128,7 +133,7 @@ function Income(data:data) {
   return (
     <>
     <Text bg='teal.100' fontWeight='bold' p='2'>Pendapatan Bersih</Text>
-    <SimpleGrid columns={2} fontSize='sm'>
+    <SimpleGrid columns={2} fontSize='sm' pb='5'>
       {rowIncome.map((row:rowData,index:number) => (
         <GridProfitLoss key={index} gridrow={row} rowctr={index} />
       ))}
@@ -148,10 +153,76 @@ function GrossExpense(data: data) {
   return (
     <>
     <Text bg='teal.100' fontWeight='bold' p='2'>Laba Kotor</Text>
-    <SimpleGrid columns={2} fontSize='sm'>
+    <SimpleGrid columns={2} fontSize='sm' pb='5'>
       {rowIncome.map((row:rowData,index:number) => (
         <GridProfitLoss key={index} gridrow={row} rowctr={index} />
       ))}
+    </SimpleGrid>
+    </>
+  )
+}
+
+function OperatingProfit(data: data) {
+  // third parameter is marker wether this value adding money or deducting money
+  const rowIncome = [
+    getDataByLabel(data,'Laba Kotor','none'),
+    getDataByLabel(data,'Beban','deduct'),
+    getDataByLabel(data,'Laba Usaha','none'),
+  ]
+
+  return (
+    <>
+    <Text bg='teal.100' fontWeight='bold' p='2'>Laba Usaha</Text>
+    <SimpleGrid columns={2} fontSize='sm' pb='5'>
+      {rowIncome.map((row:rowData,index:number) => (
+        <GridProfitLoss key={index} gridrow={row} rowctr={index} />
+      ))}
+    </SimpleGrid>
+    </>
+  )
+}
+
+function ProfitBeforeTaxes(data: data) {
+  // third parameter is marker wether this value adding money or deducting money
+  const rowIncome = [
+    getDataByLabel(data,'Laba Usaha','none'),
+    getDataByLabel(data,'Pendapatan Lainnya','none'),
+    getDataByLabel(data,'Beban Lainnya','deduct'),
+    getDataByLabel(data,'Laba Sebelum Beban Pajak Penghasilan','none'),
+  ]
+
+  return (
+    <>
+    <Text bg='teal.100' fontWeight='bold' p='2'>Laba Sebelum Pajak</Text>
+    <SimpleGrid columns={2} fontSize='sm' pb='5'>
+      {rowIncome.map((row:rowData,index:number) => (
+        <GridProfitLoss key={index} gridrow={row} rowctr={index} />
+      ))}
+    </SimpleGrid>
+    </>
+  )
+}
+
+function NetProfit(data: data) {
+  // third parameter is marker wether this value adding money or deducting money
+  const rowIncome = [
+    getDataByLabel(data,'Laba Sebelum Beban Pajak Penghasilan','none'),
+    getDataByLabel(data,'Beban Pajak','deduct'),
+  ]
+
+  return (
+    <>
+    <Text bg='teal.100' fontWeight='bold' p='2'>Laba Bersih</Text>
+    <SimpleGrid columns={2} fontSize='sm' pb='5'>
+      {rowIncome.map((row:rowData,index:number) => (
+        <GridProfitLoss key={index} gridrow={row} rowctr={index} />
+      ))}
+      <Box py='2' pl='4'>Laba Bersih</Box>
+      <Box py='2' pr='3'>
+        <Text align='right'>
+          {formatNumber(profit)}
+        </Text>
+      </Box>
     </SimpleGrid>
     </>
   )
