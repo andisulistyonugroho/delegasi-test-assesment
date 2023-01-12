@@ -51,7 +51,7 @@ function DetailProfitLoss() {
   const {onOpen, isOpen, onClose} = useDisclosure()
   return (
     <>
-    <Button size='sm' isFullWidth onClick={onOpen}>Lihat detail</Button>
+    <Button isFullWidth onClick={onOpen}>Lihat detail</Button>
     <Modal isOpen={isOpen} onClose={onClose} size='sm' isCentered>
       <ModalOverlay />
       <ModalContent fontFamily='Poppins'>
