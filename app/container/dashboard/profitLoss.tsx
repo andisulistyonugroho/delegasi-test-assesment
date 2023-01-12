@@ -71,6 +71,8 @@ function DetailProfitLoss(data:data) {
 
           <Income profitloss={data.profitloss} />
 
+          <GrossExpense profitloss={data.profitloss} />
+
         </ModalBody>
       </ModalContent>
     </Modal>
@@ -92,6 +94,8 @@ function GridProfitLoss(data:{ gridrow:{label: string,value: number, subtract: b
   const rowColor = function(value:number) {
     return value%2 === 1 ? 'teal.100' : ''
   }
+
+  // Add bracket on object that cause money deduction
   const theValue = function (value:number, subtract:boolean) {
     if (subtract) {
       return '('+formatNumber(value)+')'  
@@ -112,9 +116,7 @@ function GridProfitLoss(data:{ gridrow:{label: string,value: number, subtract: b
 }
 
 function Income(data:data) {
-  console.log(data.profitloss)
-  
-  // third parameter is market wether this value adding money or deducting money
+  // third parameter is marker wether this value adding money or deducting money
   const rowIncome = [
     getDataByLabel(data,'Pendapatan Kotor', 'add'),
     getDataByLabel(data,'Diskon Penjualan','deduct'),
@@ -125,7 +127,27 @@ function Income(data:data) {
 
   return (
     <>
-    <Text bg='teal.100' fontWeight='bold' p='2'>Pendapatan</Text>
+    <Text bg='teal.100' fontWeight='bold' p='2'>Pendapatan Bersih</Text>
+    <SimpleGrid columns={2} fontSize='sm'>
+      {rowIncome.map((row:rowData,index:number) => (
+        <GridProfitLoss key={index} gridrow={row} rowctr={index} />
+      ))}
+    </SimpleGrid>
+    </>
+  )
+}
+
+function GrossExpense(data: data) {
+  // third parameter is marker wether this value adding money or deducting money
+  const rowIncome = [
+    getDataByLabel(data,'Pendapatan Bersih', 'none'),
+    getDataByLabel(data,'Harga Pokok Penjualan', 'deduct'),
+    getDataByLabel(data,'Laba Kotor','none')
+  ]
+
+  return (
+    <>
+    <Text bg='teal.100' fontWeight='bold' p='2'>Laba Kotor</Text>
     <SimpleGrid columns={2} fontSize='sm'>
       {rowIncome.map((row:rowData,index:number) => (
         <GridProfitLoss key={index} gridrow={row} rowctr={index} />
