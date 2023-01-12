@@ -34,7 +34,7 @@ function ProfitLoss(data: data) {
         isTruncated
         bg='grey.400'
       >
-        <Text fontSize='sm' textAlign='center'>Laba Rugi</Text>
+        <Text fontSize='sm' textAlign='center'>Laba Bersih</Text>
         <Center fontSize='xl' fontWeight='bold' mt='3' color='#255057'>
           Rp {formatNumber(profit)}
         </Center>
@@ -59,8 +59,8 @@ function DetailProfitLoss(data:data) {
 
   return (
     <>
-    <Button isFullWidth onClick={onOpen}>Lihat detail</Button>
-    <Modal isOpen={isOpen} onClose={onClose} size='sm' isCentered scrollBehavior='inside'>
+    <Button isFullWidth onClick={onOpen} size='sm'>Lihat detail</Button>
+    <Modal isOpen={isOpen} onClose={onClose} size='full' isCentered scrollBehavior='inside'>
       <ModalOverlay />
       <ModalContent fontFamily='Poppins'>
         <ModalHeader>

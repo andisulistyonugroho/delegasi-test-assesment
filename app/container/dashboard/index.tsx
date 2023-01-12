@@ -1,9 +1,20 @@
 import { Box } from '@chakra-ui/react';
 import ProfitLoss from './profitLoss';
+import BalanceSheet from './balanceSheet';
 
+interface NeracaDetail {
+  label: string,
+  value: number,
+  details?: Array<NeracaDetail>,
+  children?: Array<NeracaDetail>
+}
 interface result {
   dashboardData: {
-    neraca: object, 
+    neraca: {
+      label: string,
+      value: number,
+      details: Array<NeracaDetail>
+    }, 
     profitloss: {
       label: string,
       value: number,
@@ -25,6 +36,10 @@ export default function DashboardContainer(data: result) {
           Periode: 2023-01
       </Box>
       <ProfitLoss profitloss={data.dashboardData.profitloss} />
+
+      <hr></hr>
+
+      <BalanceSheet neraca={data.dashboardData.neraca} />
     </Box>
   );
 }

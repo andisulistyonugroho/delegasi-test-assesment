@@ -22,6 +22,7 @@ import {
 } from '@chakra-ui/icons';
 import { useLoaderData } from '@remix-run/react';
 import { getProfitLoss } from '~/models/profitloss.server';
+import { getBalanceSheet } from '~/models/balancesheet.server'
 
 import DashboardContainer from '~/container/dashboard';
 
@@ -187,5 +188,6 @@ const NAV_ITEMS: Array<NavItem> = [
 
 export async function loader (){
   const profitlossRes = await getProfitLoss();
-  return {profitloss: profitlossRes, neraca: {}}
+  const neracaRes = await getBalanceSheet();
+  return {profitloss: profitlossRes, neraca: neracaRes}
 }
