@@ -19,9 +19,9 @@ interface NeracaDetail {
 }
 
 export default function balanceSheet(data: data) {
-  const objectAktiva = getDataByLabel(data.neraca,'Aktiva','none')
+  const objectAktiva = getDataByLabel(data.neraca,'Aktiva')
   const aktiva = objectAktiva.value
-  const objectPasiva = getDataByLabel(data.neraca,'Pasiva','none')
+  const objectPasiva = getDataByLabel(data.neraca,'Pasiva')
   const pasiva = objectPasiva.value
   const balanceState = aktiva === pasiva ? 'Seimbang' : 'Tidak Seimbang'
   return (
@@ -91,8 +91,11 @@ function DetailBalanceSheet(data:{aktiva:NeracaDetail}) {
 function NeracaAktiva(neracaaktiva: {data: NeracaDetail}) {
   // const aktivaDetail = neracaaktiva.data.details
   // const aktivaLancar = aktivaDetail ? aktivaDetail.find(obj => obj.label === 'Aktiva Lancar') : []
-  const aktivaLancar = getDataByLabel(neracaaktiva.data,'Aktiva Lancar', 'none')
-  console.log('A:', aktivaLancar);
+  const aktivaLancar = getDataByLabel(neracaaktiva.data,'Aktiva Lancar')
+  const cashnbank = getDataByLabel(aktivaLancar,'Kas & Bank')
+  console.log('A:', cashnbank.details)
+  // const asset = []
+  // asset = asset.push(cashnbank.details)
   
   return (
     <Box>----</Box>
@@ -112,10 +115,8 @@ function GridNeraca(data:{details:{label:string, value: number, details: any, ch
 }
 
 function GridNeracaChild(child:{row:any}) {
-  console.log('child:', child.row.length)
+  // console.log('child:', child.row.length)
   if (child.row.length > 0) {
-    console.log('a:', child.row)
-    console.log('map:', child.row.details)
     return (
       <>
       <Text>A</Text>
@@ -134,8 +135,9 @@ function formatNumber(value:number) {
 }
 
 // third parameter is a marker wether this object deducting money or not
-function getDataByLabel(data:NeracaDetail,label:string, flag: string) {
-  console.log(data);
+function getDataByLabel(data:NeracaDetail,label:string,) {
+  // console.log(data);
+  console.log('find :', label)
   
   let found
   if (data.details && data.details.length) {
@@ -143,5 +145,6 @@ function getDataByLabel(data:NeracaDetail,label:string, flag: string) {
   } else if (data.children && data.children.length) {
     found = data.children.find(obj => obj.label === label)
   }
-  return found ? {...found,subtract: flag === 'deduct' ? true : false} : {label: label + ': not found', value: 0}
+  // console.log('found: ', found)
+  return found ?? {label: label + ': not found', value: 0}
 }
