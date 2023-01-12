@@ -26,14 +26,14 @@ function ProfitLoss(data: profitloss) {
         isTruncated
         bg='grey.400'
       >
-        <Text fontSize='sm'>Laporan Laba Rugi</Text>
-        <Center fontSize='xl' mt='3'>
+        <Text fontSize='sm' textAlign='center'>Laba Rugi</Text>
+        <Center fontSize='xl' fontWeight='bold' mt='3' color='#255057'>
           Rp {total}
         </Center>
         <Flex pt='3'>
           <Box p='4'>
             <Text fontSize='xs'>Pendapatan</Text>
-            <Text fontSize='sm' color='green.500'>Rp {totalGrossOmset}</Text>
+            <Text fontSize='sm' color='#499C6E'>Rp {totalGrossOmset}</Text>
           </Box>
           <Spacer />
           <Box p='4'>
@@ -52,7 +52,7 @@ function DetailProfitLoss() {
   return (
     <>
     <Button size='xs' isFullWidth onClick={onOpen}>Lihat detail</Button>
-    <Modal isOpen={isOpen} onClose={onClose} size='full'>
+    <Modal isOpen={isOpen} onClose={onClose} size='sm' isCentered>
         <ModalOverlay />
         <ModalContent fontFamily='Poppins'>
           <ModalHeader>
