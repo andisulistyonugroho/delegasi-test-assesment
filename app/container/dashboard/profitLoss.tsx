@@ -41,8 +41,8 @@ function ProfitLoss(data: profitloss) {
             <Text color='red' fontSize='sm'>Rp {totalExpense}</Text>
           </Box>
         </Flex>
-        {/* <DetailProfitLoss /> */}
-        <BasicUsage />
+        <DetailProfitLoss />
+        {/* <BasicUsage /> */}
       </Box>
     )
 }
@@ -51,7 +51,7 @@ function DetailProfitLoss() {
   const {onOpen, isOpen, onClose} = useDisclosure()
   return (
     <>
-    <Button size='xs' isFullWidth onClick={onOpen}>Lihat detail</Button>
+    <Button size='sm' isFullWidth onClick={onOpen}>Lihat detail</Button>
     <Modal isOpen={isOpen} onClose={onClose} size='sm' isCentered>
       <ModalOverlay />
       <ModalContent fontFamily='Poppins'>
@@ -83,6 +83,12 @@ function DetailProfitLoss() {
             </Tbody>
           </Table>
         </TableContainer>
+        <ModalBody>BODY</ModalBody>
+        <ModalFooter>
+            <Button colorScheme='blue' mr={3} onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
       </ModalContent>
     </Modal>
     </>
