@@ -133,22 +133,6 @@ function generateAssets(data:NeracaDetail) {
   return assets
 }
 
-function GridNeracaChild(child:{row:any}) {
-  // console.log('child:', child.row.length)
-  if (child.row.length > 0) {
-    return (
-      <>
-      <Text>A</Text>
-        {/* {child.row.map((row:detailRow, index: number) => (
-          <GridNeraca key={index} details={row} />
-        ))} */}
-      </>
-    )
-  } else {
-    return (<>{child.row.length}</>)
-  }
-}
-
 function formatNumber(value:number) {
     return Intl.NumberFormat('en-US').format(value)
 }
