@@ -84,11 +84,6 @@ function DetailProfitLoss() {
           </Table>
         </TableContainer>
         <ModalBody>BODY</ModalBody>
-        <ModalFooter>
-            <Button colorScheme='blue' mr={3} onClick={onClose}>
-              Closes
-            </Button>
-          </ModalFooter>
       </ModalContent>
     </Modal>
     </>
