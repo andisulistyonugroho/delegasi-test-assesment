@@ -176,17 +176,10 @@ function generateLiability(data:NeracaDetail) {
   console.log('liabli:', data);
   
   const kewajibanlancar = getDataByLabel(data,'Kewajiban Lancar')
-  // const cashnbank = getDataByLabel(aktivaLancar,'Kas & Bank')
-  // const akunpiutang = getDataByLabel(aktivaLancar,'Akun Piutang')
-  // const persediaan = getDataByLabel(aktivaLancar,'Persediaan')
-  // const aktivalancarlain = getDataByLabel(aktivaLancar,'Aktiva Lancar Lainnya')
-  // const aktivaTidakLancar = getDataByLabel(data,'Aktiva Tidak Lancar')
+  const kewajibantidaklancar = getDataByLabel(data,'Kewajiban Tidak Lancar')
   
   let liabilites = kewajibanlancar.details
-  // liabilites?.push(akunpiutang)
-  // liabilites?.push(persediaan)
-  // liabilites?.push(...(aktivalancarlain.details||[]))
-  // liabilites?.push(...(aktivaTidakLancar.details||[]))
+  liabilites?.push(...(kewajibantidaklancar.details||[]))
   return liabilites
 }
 
