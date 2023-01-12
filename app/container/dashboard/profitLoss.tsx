@@ -1,6 +1,6 @@
 import {
   Box, Center, Text, Flex, Button, Spacer, useDisclosure, Modal,ModalOverlay,ModalContent, ModalHeader,
-  ModalCloseButton, TableContainer, Table, Tbody, Tr, Td
+  ModalCloseButton, ModalFooter, ModalBody, TableContainer, Table, Tbody, Tr, Td
 } from '@chakra-ui/react'
 
 interface profitloss {
@@ -41,8 +41,8 @@ function ProfitLoss(data: profitloss) {
             <Text color='red' fontSize='sm'>Rp {totalExpense}</Text>
           </Box>
         </Flex>
-        <DetailProfitLoss />
-
+        {/* <DetailProfitLoss /> */}
+        <BasicUsage />
       </Box>
     )
 }
@@ -53,36 +53,63 @@ function DetailProfitLoss() {
     <>
     <Button size='xs' isFullWidth onClick={onOpen}>Lihat detail</Button>
     <Modal isOpen={isOpen} onClose={onClose} size='sm' isCentered>
+      <ModalOverlay />
+      <ModalContent fontFamily='Poppins'>
+        <ModalHeader>
+          <Text fontWeight='normal'>Detail Laba Rugi</Text>
+          <Text fontWeight='normal' fontSize='xs'>Periode 2023-01</Text>
+        </ModalHeader>
+        
+        <ModalCloseButton />
+        
+        <TableContainer>
+          <Table variant='striped' colorScheme='teal' size='sm'>
+            <Tbody>
+              <Tr>
+                <Td fontWeight='bold' colSpan={3}>Pendapatan</Td>
+              </Tr>
+              <Tr>
+                <Td fontSize='xs'>
+                  Pendapatan Kotor
+                </Td>
+                <Td isNumeric fontSize='xs'>196919000</Td>
+                <Td></Td>
+              </Tr>
+              <Tr>
+                <Td fontSize='xs'>Diskon Penjualan</Td>
+                <Td></Td>
+                <Td isNumeric fontSize='xs'>196919000</Td>
+              </Tr>
+            </Tbody>
+          </Table>
+        </TableContainer>
+      </ModalContent>
+    </Modal>
+    </>
+  )
+}
+
+function BasicUsage() {
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  return (
+    <>
+      <Button isFullWidth onClick={onOpen}>Open Modal</Button>
+
+      <Modal isOpen={isOpen} onClose={onClose} size='sm' isCentered>
         <ModalOverlay />
-        <ModalContent fontFamily='Poppins'>
-          <ModalHeader>
-            <Text fontWeight='normal'>Detail Laba Rugi</Text>
-            <Text fontWeight='normal' fontSize='xs'>Periode 2023-01</Text>
-          </ModalHeader>
-          
+        <ModalContent>
+          <ModalHeader>Modal Title</ModalHeader>
           <ModalCloseButton />
-          
-          <TableContainer>
-            <Table variant='striped' colorScheme='teal' size='sm'>
-              <Tbody>
-                <Tr>
-                  <Td fontWeight='bold' colSpan={3}>Pendapatan</Td>
-                </Tr>
-                <Tr>
-                  <Td fontSize='xs'>
-                    Pendapatan Kotor
-                  </Td>
-                  <Td isNumeric fontSize='xs'>196919000</Td>
-                  <Td></Td>
-                </Tr>
-                <Tr>
-                  <Td fontSize='xs'>Diskon Penjualan</Td>
-                  <Td></Td>
-                  <Td isNumeric fontSize='xs'>196919000</Td>
-                </Tr>
-              </Tbody>
-            </Table>
-          </TableContainer>
+          <ModalBody>
+            ASDF JKLP
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme='blue' mr={3} onClick={onClose}>
+              Close
+            </Button>
+            <Button variant='ghost'>Secondary Action</Button>
+          </ModalFooter>
         </ModalContent>
       </Modal>
     </>
