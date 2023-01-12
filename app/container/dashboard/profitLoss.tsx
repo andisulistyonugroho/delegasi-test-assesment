@@ -41,8 +41,7 @@ function ProfitLoss(data: profitloss) {
             <Text color='red' fontSize='sm'>Rp {totalExpense}</Text>
           </Box>
         </Flex>
-        {/* <DetailProfitLoss /> */}
-        <BasicUsage />
+        <DetailProfitLoss />
       </Box>
     )
 }
@@ -51,7 +50,7 @@ function DetailProfitLoss() {
   const {onOpen, isOpen, onClose} = useDisclosure()
   return (
     <>
-    <Button size='xs' isFullWidth onClick={onOpen}>Lihat detail</Button>
+    <Button size='sm' isFullWidth onClick={onOpen}>Lihat detail</Button>
     <Modal isOpen={isOpen} onClose={onClose} size='sm' isCentered>
       <ModalOverlay />
       <ModalContent fontFamily='Poppins'>
@@ -85,33 +84,6 @@ function DetailProfitLoss() {
         </TableContainer>
       </ModalContent>
     </Modal>
-    </>
-  )
-}
-
-function BasicUsage() {
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  return (
-    <>
-      <Button isFullWidth onClick={onOpen}>Open Modal</Button>
-
-      <Modal isOpen={isOpen} onClose={onClose} size='sm' isCentered>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            ASDF JKLP
-          </ModalBody>
-
-          <ModalFooter>
-            <Button colorScheme='blue' mr={3} onClick={onClose}>
-              Close
-            </Button>
-            <Button variant='ghost'>Secondary Action</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
     </>
   )
 }
